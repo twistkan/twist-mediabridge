@@ -1,20 +1,23 @@
 # Twist MediaBridge
 
+**Windows download:** [Latest release](https://github.com/twistkan/twist-mediabridge/releases/latest). This repository contains source code; packaged executables are in Releases.
+
+
 A local Windows desktop app for Android media transfers, contacts, app installation backups and verified file backups.
 
-**Current build:** 1.14.11  
-**Executable:** `Ready-to-use-1.14.11/TwistMediaBridge.exe`  
+**Current build:** 1.15  
+**Executable:** `Ready-to-use-1.15/TwistMediaBridge.exe`  
 **Complete recreation prompt:** [BUILD-PROMPT.md](BUILD-PROMPT.md)
 
 The sidebar and phone companion include **Powered by Tweest**. New: [Companion Wi-Fi for Android 6+, including Android 9](COMPANION-WIFI.md), alongside existing USB and Android wireless debugging.
 
 ## Start the app
 
-1. Open `Ready-to-use-1.14.11/TwistMediaBridge.exe`.
+1. Open `Ready-to-use-1.15/TwistMediaBridge.exe`.
 2. The app keeps an installed copy under `%LOCALAPPDATA%/TwistMediaBridge/Application/` and creates a **Twist MediaBridge** desktop shortcut.
 3. Use the shortcut for later launches. If deleted, launching the executable again recreates it.
 
-The root `TwistMediaBridge.exe` is also the current 1.14.11 delivery. Historical `DeviceBridge` executables contain earlier designs.
+The root `TwistMediaBridge.exe` is also the current 1.15 delivery. Historical `DeviceBridge` executables contain earlier designs.
 
 No Python, Java, Android Studio or separate Platform Tools installation is needed to run the packaged app. Android tools, preview components and the Contacts Bridge APK are embedded. Runtime components extract temporarily; settings and backups are stored separately.
 
@@ -263,7 +266,7 @@ Update both the Windows executable and existing phone APK. Companion 1.4 counts 
 
 
 
-## Thumbnail recovery and export accounting — v1.14.11
+## Thumbnail recovery and export accounting — v1.15
 
 Queued thumbnails now pause while an export owns the connection and resume afterward; they are no longer discarded and left on Loading. Exports include selected totals and a per-file result with source path, destination filename, status and checksum (or failure reason). Activity > Save last detailed report exports those results. Same-content files already present are counted separately from newly copied files. Partial gallery exports display a bounded failure summary. Thumbnail completion is not a prerequisite for exporting a selected file. A native-combobox focus guard also avoids popup callback errors. Validated with 124 regression tests and real Tk checks demonstrating 12 selected files exported before their thumbnails resume. Existing Companion 1.4 is compatible; no phone APK update is needed.
 
@@ -271,3 +274,4 @@ Queued thumbnails now pause while an export owns the connection and resume after
 ## Version 1.15 — Companion Wi-Fi app installation
 
 Use `Ready-to-use-1.15/TwistMediaBridge.exe` and update the phone in place using `Phone-app-1.5/TwistCompanion.apk`. Apps → Reinstall file now sends an APK or verified Twist .apks set over Companion Wi-Fi and opens a phone-side approval screen. Allow installation from Twist Companion if Android asks, then approve the installer. Android confirms success or reports refusal back to the PC. There is no silent installation. USB / Android wireless debugging, media, contacts and backup workflows remain available. See COMPANION-WIFI.md for steps and limits.
+
