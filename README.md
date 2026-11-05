@@ -1,9 +1,8 @@
 # Twist MediaBridge
 
+**[Download for Windows](https://github.com/twistkan/twist-mediabridge/releases/download/v1.15/TwistMediaBridge.exe)** · [Release notes and checksums](https://github.com/twistkan/twist-mediabridge/releases/tag/v1.15)
+
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Support%20Twist%20Apps-FFDD00?style=flat&logo=buymeacoffee&logoColor=black)](https://www.yotip.me/twistkan)
-
-**Windows download:** [Latest release](https://github.com/twistkan/twist-mediabridge/releases/latest). This repository contains source code; packaged executables are in Releases.
-
 
 A local Windows desktop app for Android media transfers, contacts, app installation backups and verified file backups.
 
