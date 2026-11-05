@@ -11,6 +11,12 @@ A local Windows desktop app for Android media transfers, contacts, app installat
 
 The sidebar and phone companion include **Powered by Tweest**. New: [Companion Wi-Fi for Android 6+, including Android 9](COMPANION-WIFI.md), alongside existing USB and Android wireless debugging.
 
+## Screenshot
+
+![Twist MediaBridge overview with backup, transfer and restore actions](docs/screenshots/overview.png)
+
+Overview shown in version 1.14.
+
 ## Start the app
 
 1. Open `Ready-to-use-1.15/TwistMediaBridge.exe`.
