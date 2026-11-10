@@ -46,6 +46,8 @@ class App(tk.Tk):
             self.settings = {}
         self.library = Path(self.settings.get('library', str(self.home / 'Backups')))
         self.endpoints = []
+        self.send_queue = []
+        self.pending_drops = []
         for folder in self.settings.get('folders', []):
             try:
                 self.endpoints.append(Folder(folder))
@@ -93,13 +95,13 @@ class App(tk.Tk):
         self.label(self.sidebar, 'Twist MediaBridge', size=15, bold=True).pack(anchor='w', padx=T['space_lg'])
         self.label(self.sidebar, 'YOUR DATA. YOUR DEVICES.', size=8, muted=True).pack(anchor='w', padx=T['space_lg'], pady=(T['space_sm'], T['space_md']))
         self.nav = {}
-        for title in ('Media library', 'Overview', 'Phone transfer', 'Create backup', 'Restore backup', 'Contacts', 'Apps', 'Backup manager', 'Activity', 'Connection help'):
+        for title in ('Media library', 'Send to phone', 'Overview', 'Phone transfer', 'Create backup', 'Restore backup', 'Contacts', 'Apps', 'Backup manager', 'Activity', 'Connection help'):
             btn = self.button(self.sidebar, title, lambda p=title: self.show(p))
             btn.configure(pady=3)
             btn.pack(fill='x', padx=T['space_md'], pady=2)
             self.nav[title] = btn
         self.button(self.sidebar,'Companion Wi-Fi',self.open_companion).pack(fill='x',padx=T['space_md'],pady=3)
-        self.label(self.sidebar, 'Powered by Tweest\nLOCAL FIRST · v1.15', muted=True, size=9).pack(side='bottom', anchor='w', padx=T['space_lg'], pady=T['space_lg'])
+        self.label(self.sidebar, 'Powered by Tweest\nLOCAL FIRST · v1.16', muted=True, size=9).pack(side='bottom', anchor='w', padx=T['space_lg'], pady=T['space_lg'])
         self.right = tk.Frame(self, bg=T['bg'])
         self.right.grid(row=0, column=1, sticky='nsew', padx=T['space_xl'], pady=T['space_lg'])
         self.right.grid_rowconfigure(0, weight=1)
@@ -134,6 +136,11 @@ class App(tk.Tk):
         self.cancel_btn.configure(state='disabled')
         self.protocol('WM_DELETE_WINDOW', self.close)
         self.show('Media library')
+        from .file_drop import FileDrop
+        try:
+            self.file_drop = FileDrop(self, lambda paths:self.events.put(('drop_files',paths)))
+        except OSError:
+            self.file_drop = None  # File picker remains usable on managed desktops.
         self.after(100, self.poll)
         if getattr(sys, 'frozen', False) and home is None:
             from .desktop import ensure_shortcut
@@ -199,10 +206,14 @@ class App(tk.Tk):
             child.destroy()
         for title, btn in self.nav.items():
             btn.configure(bg=T['raised'] if title == page else T['surface'], fg=T['accent'] if title == page else T['text'])
-        {'Media library': self.media_page, 'Overview': self.overview, 'Phone transfer': self.transfer_page, 'Create backup': self.backup_page,
+        {'Media library': self.media_page, 'Send to phone': self.send_page, 'Overview': self.overview, 'Phone transfer': self.transfer_page, 'Create backup': self.backup_page,
          'Restore backup': self.restore_page, 'Backup manager': self.backup_manager_page, 'Contacts': lambda: self.phone_tools(False), 'Apps': lambda: self.phone_tools(True), 'Activity': self.activity_page, 'Connection help': self.help_page}[page]()
         self.canvas.yview_moveto(0)
         self.resize_content()
+
+    def send_page(self):
+        from .send_to_phone import SendToPhone
+        self.send_panel = SendToPhone(self)
 
     def remember_backup(self, path):
         return self.catalog.add(path)
@@ -417,7 +428,7 @@ class App(tk.Tk):
         webbrowser.open('https://developer.android.com/tools/releases/platform-tools')
 
     def persist(self):
-        atomic_json(self.config_file, {'library': str(self.library), 'adb': self.adb if self.adb_mode == 'custom' else '', 'adb_mode': self.adb_mode,
+        atomic_json(self.config_file, {**self.settings, 'library': str(self.library), 'adb': self.adb if self.adb_mode == 'custom' else '', 'adb_mode': self.adb_mode,
                     'folders': [str(e.root) for e in self.endpoints if isinstance(e, Folder)]})
 
     def add_folder(self, variable=None):
@@ -567,7 +578,9 @@ class App(tk.Tk):
         try:
             while True:
                 event = self.events.get_nowait()
-                if event[0] == 'media_batch':
+                if event[0] == 'drop_files':
+                    self.pending_drops.extend(event[1])
+                elif event[0] == 'media_batch':
                     _, gallery, token, items = event
                     if gallery.alive:
                         gallery.update_scan_batch(token, items)
@@ -624,6 +637,10 @@ class App(tk.Tk):
                 if widget.winfo_exists():
                     widget.configure(state=state)
         finally:
+            if self.pending_drops and not self.busy:
+                paths,self.pending_drops=self.pending_drops,[]
+                if self.page != 'Send to phone':self.show('Send to phone')
+                self.send_panel.add(paths)
             self.after(100, self.poll)
 
     def report_callback_exception(self, exc_type, value, traceback):
@@ -665,9 +682,10 @@ class App(tk.Tk):
         self.destroy()
 
 
-def main():
+def main(start_page=None):
     try:
         app = App()
+        if start_page == 'Send to phone':app.show(start_page)
         app.mainloop()
     except Exception:
         import traceback

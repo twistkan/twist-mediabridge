@@ -6,4 +6,4 @@ if __name__ == '__main__':
         from bridge.diagnostics import self_test
         self_test(sys.argv[2])
     else:
-        main()
+        main('Send to phone' if '--send-to-phone' in sys.argv else None)

@@ -24,3 +24,7 @@ Third-party notices are included in `licenses/` and embedded by the desktop buil
 existing phone installation signed with the original key; retain the original
 signing directory securely outside GitHub.
 
+
+## Version 1.16
+
+Adds a Send to phone page with native Windows file drops, optional automatic sending, manual queueing, multiple-phone selection and verified shared-storage writes. Existing connections, media, contacts, APK installation and backup workflows are retained. Release binaries remain in GitHub Releases. Local data, caches, signing material and historical builds are excluded.

@@ -1,13 +1,13 @@
 # Twist MediaBridge
 
-**[Download for Windows](https://github.com/twistkan/twist-mediabridge/releases/download/v1.15/TwistMediaBridge.exe)** · [Release notes and checksums](https://github.com/twistkan/twist-mediabridge/releases/tag/v1.15)
+**[Download for Windows](https://github.com/twistkan/twist-mediabridge/releases/download/v1.16/TwistMediaBridge.exe)** · [Release notes and checksums](https://github.com/twistkan/twist-mediabridge/releases/tag/v1.16)
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-Support%20Twist%20Apps-FFDD00?style=flat&logo=buymeacoffee&logoColor=black)](https://www.yotip.me/twistkan)
 
 A local Windows desktop app for Android media transfers, contacts, app installation backups and verified file backups.
 
-**Current build:** 1.15  
-**Executable:** `Ready-to-use-1.15/TwistMediaBridge.exe`  
+**Current build:** 1.16  
+**Executable:** `Ready-to-use-1.16/TwistMediaBridge.exe`  
 **Complete recreation prompt:** [BUILD-PROMPT.md](BUILD-PROMPT.md)
 
 The sidebar and phone companion include **Powered by Tweest**. New: [Companion Wi-Fi for Android 6+, including Android 9](COMPANION-WIFI.md), alongside existing USB and Android wireless debugging.
@@ -20,11 +20,11 @@ Overview shown in version 1.14.
 
 ## Start the app
 
-1. Open `Ready-to-use-1.15/TwistMediaBridge.exe`.
+1. Open `Ready-to-use-1.16/TwistMediaBridge.exe`.
 2. The app keeps an installed copy under `%LOCALAPPDATA%/TwistMediaBridge/Application/` and creates a **Twist MediaBridge** desktop shortcut.
 3. Use the shortcut for later launches. If deleted, launching the executable again recreates it.
 
-The root `TwistMediaBridge.exe` is also the current 1.15 delivery. Historical `DeviceBridge` executables contain earlier designs.
+The root `TwistMediaBridge.exe` is also the current 1.16 delivery. Historical `DeviceBridge` executables contain earlier designs.
 
 No Python, Java, Android Studio or separate Platform Tools installation is needed to run the packaged app. Android tools, preview components and the Contacts Bridge APK are embedded. Runtime components extract temporarily; settings and backups are stored separately.
 
@@ -280,5 +280,16 @@ Queued thumbnails now pause while an export owns the connection and resume after
 
 ## Version 1.15 — Companion Wi-Fi app installation
 
-Use `Ready-to-use-1.15/TwistMediaBridge.exe` and update the phone in place using `Phone-app-1.5/TwistCompanion.apk`. Apps → Reinstall file now sends an APK or verified Twist .apks set over Companion Wi-Fi and opens a phone-side approval screen. Allow installation from Twist Companion if Android asks, then approve the installer. Android confirms success or reports refusal back to the PC. There is no silent installation. USB / Android wireless debugging, media, contacts and backup workflows remain available. See COMPANION-WIFI.md for steps and limits.
+Use `Ready-to-use-1.16/TwistMediaBridge.exe` and update the phone in place using `Phone-app-1.5/TwistCompanion.apk`. Apps → Reinstall file now sends an APK or verified Twist .apks set over Companion Wi-Fi and opens a phone-side approval screen. Allow installation from Twist Companion if Android asks, then approve the installer. Android confirms success or reports refusal back to the PC. There is no silent installation. USB / Android wireless debugging, media, contacts and backup workflows remain available. See COMPANION-WIFI.md for steps and limits.
 
+
+
+## Version 1.16 — Drop files onto your phone
+
+Open **Send to phone**, select a connected Android phone, then drag one or more files from Windows Explorer into the app. By default, the files start copying immediately. Disable **Send automatically** to build a queue and use **Send files** instead. **Choose files** is available as a fallback. Drops made during another operation wait until it finishes. With multiple phones connected, select the destination first.
+
+Companion Wi-Fi sends files into the receive folder already approved on the phone. USB and Android wireless debugging send them to **Download/TwistMediaBridge**. No phone update is required beyond the existing Companion receive-folder support. Files keep their original names, identical existing files are skipped after verification, and conflicting files are preserved. Originals remain on the PC. Failed files stay queued; detailed results can be saved from Activity. Folders are skipped; drop individual files. APKs are copied as files—use Apps → Reinstall file for installation.
+
+Windows Explorer file drops use the built-in Windows Shell API; there is no new drag-and-drop dependency. The release is `Ready-to-use-1.16/TwistMediaBridge.exe`.
+
+Validation: 133 automated tests, native Windows DROPFILES handling with Unicode and multiple files, a real HTTPS phone fixture, existing Companion workflows, and packaged checks passed. The user confirmed the new send-to-phone flow worked. No new phone APK is required; the current Companion remains 1.5.
